@@ -1,0 +1,26 @@
+﻿[
+  {
+    "question": "What is the return policy?",
+    "answer": "Customers can return unused products within 30 days of delivery in the original packaging. Open-box accessories can be returned within 14 days. Refunds are issued to the original payment method within 5 business days after inspection."
+  },
+  {
+    "question": "How long does shipping take?",
+    "answer": "Standard shipping takes 3 to 5 business days. Express shipping takes 1 to 2 business days for in-stock items."
+  },
+  {
+    "question": "How do I reset my laptop password?",
+    "answer": "Restart the laptop, press F12 during boot, select Recovery Mode, and choose Reset Password. If BitLocker is enabled, the customer must provide the recovery key before support can continue."
+  },
+  {
+    "question": "Can I cancel an order after placing it?",
+    "answer": "Orders can be cancelled within 30 minutes of purchase if they have not entered packing. After that window, support should check warehouse status before promising cancellation."
+  },
+  {
+    "question": "How do refunds work for damaged items?",
+    "answer": "If an item arrives damaged, support should create a priority ticket, request photos, and offer a replacement or full refund once the damage is confirmed."
+  },
+  {
+    "question": "When should a case be escalated to a human agent?",
+    "answer": "Escalate when identity verification is required, the customer reports repeated failures after troubleshooting, the case involves billing disputes, or the system confidence is low."
+  }
+]

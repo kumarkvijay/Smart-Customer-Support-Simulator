@@ -1,0 +1,6 @@
+﻿__pycache__/
+*.pyc
+.venv/
+.venv312/
+.env
+logs/interactions.jsonl

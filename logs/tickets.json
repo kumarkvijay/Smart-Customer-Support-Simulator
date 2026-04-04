@@ -1,0 +1,128 @@
+﻿[
+  {
+    "ticket_id": "TKT-20260403123032639",
+    "created_at": "2026-04-03T12:30:32+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "User selected Full Power mode.",
+    "customer_message": "My laptop screen is flickering even after I reinstalled the driver. I want a human agent to review this.",
+    "summary": "Customer said: My laptop screen is flickering even after I reinstalled the driver. I want a human agent to review this. | Assistant response: I've escalated your issue to a human agent for further assistance. They will review the situation and provide a more personalized solution to help resolve the flickering screen ... | Actions: Flagged conversation for human review."
+  },
+  {
+    "ticket_id": "TKT-20260403123404575",
+    "created_at": "2026-04-03T12:34:04+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "User selected Full Power mode.",
+    "customer_message": "My laptop screen is flickering even after I reinstalled the driver. I want a human agent to review this.",
+    "summary": "Customer said: My laptop screen is flickering even after I reinstalled the driver. I want a human agent to review this. | Assistant response: I am sorry you are dealing with that. Here is the best grounded guidance from the current support knowledge base. Relevant guidance: - Laptop screen flickers after wake from sle... | Actions: Queried the private knowledge base.; Flagged conversation for human review."
+  },
+  {
+    "ticket_id": "TKT-20260403131658832",
+    "created_at": "2026-04-03T13:16:58+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "User selected Full Power mode.",
+    "customer_message": "My laptop screen is flickering even after I reinstalled the driver. I want a human agent to review this.",
+    "summary": "Customer said: My laptop screen is flickering even after I reinstalled the driver. I want a human agent to review this. | Assistant response: I am sorry you are dealing with that. Here is the best grounded guidance from the current support knowledge base. Relevant guidance: - Laptop screen flickers after wake from sle... | Actions: Queried the private knowledge base.; Flagged conversation for human review."
+  },
+  {
+    "ticket_id": "TKT-20260403145158487",
+    "created_at": "2026-04-03T14:51:58+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "I tried several times and I am frustrated because the screen is flickering again.",
+    "summary": "Customer said: I tried several times and I am frustrated because the screen is flickering again. | Assistant response: I am sorry you are dealing with that. Here is the best grounded guidance from the current support knowledge base. Relevant guidance: - Laptop screen flickers after wake from sle... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260403145316154",
+    "created_at": "2026-04-03T14:53:16+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "I tried several times and I am frustrated because the screen is flickering again.",
+    "summary": "Customer said: I tried several times and I am frustrated because the screen is flickering again. | Assistant response: I am sorry you are dealing with that. Here is the best grounded guidance from the current support knowledge base. Relevant guidance: - Laptop screen flickers after wake from sle... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260403145445299",
+    "created_at": "2026-04-03T14:54:45+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "I tried several times and I am frustrated because the screen is flickering again.",
+    "summary": "Customer said: I tried several times and I am frustrated because the screen is flickering again. | Assistant response: I am sorry you are dealing with that. Here is the best grounded guidance from the current support knowledge base. Relevant guidance: - Laptop screen flickers after wake from sle... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260403200123394",
+    "created_at": "2026-04-03T20:01:23+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "I tried several times and I am frustrated because the screen is flickering again.",
+    "summary": "Customer said: I tried several times and I am frustrated because the screen is flickering again. | Assistant response: I am sorry you are dealing with that. Here is the best grounded guidance from the current support knowledge base. Relevant guidance: - Laptop screen flickers after wake from sle... | Actions: Queried the private knowledge base.; Flagged conversation for human review."
+  },
+  {
+    "ticket_id": "TKT-20260403202330467",
+    "created_at": "2026-04-03T20:23:30+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Full Power mode.",
+    "customer_message": "Do you offer store pickup in Munich?",
+    "summary": "Customer said: Do you offer store pickup in Munich? | Assistant response: Here is the best grounded answer I can provide from the current local support knowledge base. I do not have enough verified knowledge for a confident answer from the local docum... | Actions: Queried the private knowledge base."
+  },
+  {
+    "ticket_id": "TKT-20260403202459726",
+    "created_at": "2026-04-03T20:24:59+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Full Power mode.",
+    "customer_message": "Do you offer store pickup in Munich?",
+    "summary": "Customer said: Do you offer store pickup in Munich? | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: Queried the private knowledge base."
+  },
+  {
+    "ticket_id": "TKT-20260403205933189",
+    "created_at": "2026-04-03T20:59:33+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "/model full",
+    "summary": "Customer said: /model full | Assistant response: Here is the best grounded answer I can provide from the current local support knowledge base. Relevant guidance: - How do refunds work for damaged items?: Question: How do refun... | Actions: Queried the private knowledge base.; Flagged conversation for human review."
+  },
+  {
+    "ticket_id": "TKT-20260403211905364",
+    "created_at": "2026-04-03T21:19:05+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "ollama run llama3.1:8b",
+    "summary": "Customer said: ollama run llama3.1:8b | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: Flagged conversation for human review."
+  },
+  {
+    "ticket_id": "TKT-20260403212003735",
+    "created_at": "2026-04-03T21:20:03+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "Explain the difference between revenue and EBITDA in 3 sentences.",
+    "summary": "Customer said: Explain the difference between revenue and EBITDA in 3 sentences. | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: Queried the private knowledge base."
+  },
+  {
+    "ticket_id": "TKT-20260403212221065",
+    "created_at": "2026-04-03T21:22:21+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "Complex message or weak evidence requires deeper handling.",
+    "customer_message": "What is TechGear's store pickup policy in Munich?",
+    "summary": "Customer said: What is TechGear's store pickup policy in Munich? | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: Queried the private knowledge base."
+  },
+  {
+    "ticket_id": "TKT-20260404173059351",
+    "created_at": "2026-04-04T17:30:59+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Agent mode.",
+    "customer_message": "exir",
+    "summary": "Customer said: exir | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: Queried the private knowledge base."
+  }
+]

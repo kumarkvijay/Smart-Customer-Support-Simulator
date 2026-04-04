@@ -1,0 +1,26 @@
+﻿[
+  {
+    "order_id": "ORD-78432",
+    "customer_name": "Jordan Lee",
+    "status": "in transit",
+    "last_update": "Package departed the regional hub on 2026-04-02",
+    "eta_days": 2,
+    "items": ["TechGear AirLite 14 Laptop", "USB-C Adapter"]
+  },
+  {
+    "order_id": "ORD-78490",
+    "customer_name": "Avery Patel",
+    "status": "processing",
+    "last_update": "Payment approved and warehouse picking started on 2026-04-03",
+    "eta_days": 4,
+    "items": ["TechGear Phone X2"]
+  },
+  {
+    "order_id": "ORD-78510",
+    "customer_name": "Morgan Chen",
+    "status": "delivered",
+    "last_update": "Delivered on 2026-04-01 at front door",
+    "eta_days": 0,
+    "items": ["Wireless Headphones", "Protective Case"]
+  }
+]

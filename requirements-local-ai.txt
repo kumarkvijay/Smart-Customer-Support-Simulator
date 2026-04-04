@@ -1,0 +1,11 @@
+﻿# Phase 3 runtime used in the real local environment
+langchain==1.2.14
+langgraph==1.1.4
+langchain-ollama==1.0.1
+
+# Later-phase upgrades
+chromadb>=1.0.4
+langchain-chroma>=0.2.2
+langchain-community>=0.3.21
+pypdf>=5.4.0
+streamlit>=1.44.0

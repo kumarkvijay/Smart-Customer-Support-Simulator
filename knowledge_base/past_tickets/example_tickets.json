@@ -1,0 +1,38 @@
+﻿[
+  {
+    "ticket_id": "TKT-1001",
+    "issue": "Laptop screen flickers after wake from sleep.",
+    "resolution": "Support asked customer to update graphics driver, disable adaptive brightness, and test with an external monitor. Hardware review was offered when internal display remained unstable.",
+    "tags": ["laptop", "display", "troubleshooting"]
+  },
+  {
+    "ticket_id": "TKT-1002",
+    "issue": "Customer wants to return unopened headphones after 12 days.",
+    "resolution": "Return approved because the item was unused and still within the 30-day return window.",
+    "tags": ["returns", "policy"]
+  },
+  {
+    "ticket_id": "TKT-1003",
+    "issue": "Order appears delayed with no movement for three days.",
+    "resolution": "Support checked tracking, confirmed a carrier delay, and reassured the customer using the latest shipment update.",
+    "tags": ["orders", "shipping"]
+  },
+  {
+    "ticket_id": "TKT-1004",
+    "issue": "Customer forgot laptop password and recovery key status is unknown.",
+    "resolution": "Support directed the customer to Recovery Mode and explained that BitLocker recovery must be completed before password reset.",
+    "tags": ["password", "security"]
+  },
+  {
+    "ticket_id": "TKT-1005",
+    "issue": "Phone battery dropped below 80 percent capacity after nine months.",
+    "resolution": "Battery replacement review approved under the one-year limited warranty after diagnostics.",
+    "tags": ["phone", "battery", "warranty"]
+  },
+  {
+    "ticket_id": "TKT-1006",
+    "issue": "Customer demanded a manager after repeated troubleshooting did not fix display issues.",
+    "resolution": "Case escalated to a human specialist and a high-priority ticket was opened.",
+    "tags": ["escalation", "display", "priority"]
+  }
+]

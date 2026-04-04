@@ -1,0 +1,305 @@
+Smart Customer Support Simulator (with privacy focus)
+Goal: Simulate a company knowledge base (FAQs, product docs, past tickets) and build a support agent that handles user queries, escalates when needed, and logs everything.
+How everything fits in one project:
+
+RAG: Index company docs + past ticket examples. The agent always grounds answers in retrieved knowledge.
+AI Agent: Full ReAct agent that can “look up order status” (simulated API tool), “suggest solutions”, “escalate to human”, or “generate ticket summary”.
+LLM: Used for empathetic, detailed replies and complex multi-turn troubleshooting.
+SLM: Runs on-device/privacy-first mode — first-pass intent detection + simple FAQs. The agent only calls the LLM when confidence is low or the query needs deep reasoning. (Great for learning cost/privacy trade-offs.)
+
+Why this is excellent practice:
+
+Teaches production patterns: model routing, guardrails, logging.
+Agent has real tools (you can even add a fake database query tool).
+You can deploy the SLM part on a low-resource machine (Raspberry Pi or old laptop) while the LLM runs on your main PC.
+
+Quick implementation steps:
+
+Create a small knowledge base (JSON + PDFs).
+Build two RAG chains (SLM + LLM).
+LangGraph agent with custom tools + conditional routing node.
+Add conversation memory + a final “confidence checker” (SLM grades the answer).
+UI with two modes: “Fast & Private” (SLM only) vs “Full Power” (hybrid).
+
+General Tips to Maximize Learning
+
+Start with Ollama commands: ollama run phi3 (SLM) and ollama run llama3.1 (LLM).
+Use LangGraph’s state graph to visualize the flow (it literally draws your agent + RAG pipeline).
+Add LangSmith (free tier) to trace every step — you’ll see exactly when the agent chooses SLM vs LLM and why.
+Measure: latency, token cost (if you later switch to API), and answer quality.
+Version 1 = simple RAG + LLM. Version 2 = add Agent. Version 3 = add SLM routing. Version 4 = self-correction / multi-agent.
+
+These projects are all variations of Agentic RAG with hybrid models — the exact pattern used in real-world apps right now. Pick one, clone a starter repo (search “LangGraph agentic RAG Ollama” on GitHub), and you’ll have a working system in a few hours.
+
+
+Smart Customer Support Simulator (with Privacy Focus)
+Mini-Project Overview (perfect for learning LLM + SLM + AI Agent + RAG together)
+What is this project?
+You will build a single, realistic customer-support chatbot that acts like the support system of a fictional company (e.g., “TechGear Store” selling laptops, phones, and accessories).
+Users type questions like:
+
+“My laptop screen is flickering, what should I do?”
+“Where is my order #ORD-78432?”
+“Can I return a product after 30 days?”
+
+The system does not just give generic answers. It:
+
+Searches the company’s private knowledge base (FAQs, product manuals, past tickets).
+Decides intelligently what to do next.
+Gives accurate, grounded, and empathetic replies.
+Can “escalate to human”, “create a ticket”, or “look up order status” (simulated tools).
+Runs mostly locally for privacy.
+
+Everything happens in one Python app (CLI first, then optional Streamlit/Gradio web UI).
+The real-world problem it solves
+Modern customer support has three big pain points:
+
+Problem Traditional SolutionHow Your Project Fixes ItHallucinations / Wrong answersGeneric LLM chatRAG forces every answer to be grounded in real company docsSlow & expensiveAlways use big LLM (GPT-4, Claude, etc.)SLM handles 70–80 % of simple queries → faster + cheaper + privatePrivacy & data leaksEverything sent to cloud APIsSLM + local models = zero customer data leaves your machineNo real actionsJust text repliesAI Agent can actually do things (check order, create ticket, etc.)
+This exact pattern (Agentic RAG + hybrid LLM/SLM) is what companies like Intercom, Zendesk, and Shopify are building right now for “AI agents that replace Level-1 support”.
+How all 4 technologies work together in one project
+
+RAG (Retrieval-Augmented Generation)
+You create a private knowledge base: PDFs/manuals + FAQ JSON + 20–30 example past tickets.
+Everything is chunked and stored in Chroma (or FAISS).
+Every user query first retrieves the most relevant chunks → no hallucinations.
+
+AI Agent (LangGraph ReAct style)
+The brain of the system.
+It doesn’t answer directly. It thinks step-by-step:
+“Is this a simple FAQ?”
+“Do I need to retrieve more docs?”
+“Do I need to use a tool (order lookup, ticket creation)?”
+“Is the answer confident enough?”
+
+Uses LangGraph to create a clear state machine (you can literally draw the flow).
+
+LLM (Large Language Model) – e.g. Llama 3.1 8B via Ollama
+Used only when reasoning is complex (multi-step troubleshooting, empathetic long replies, comparing products).
+High quality but slower and uses more GPU/CPU.
+
+SLM (Small Language Model) – e.g. Phi-3-mini 3.8B or Gemma-2-2B via Ollama
+Runs on CPU or even a laptop with 8 GB RAM.
+Handles: intent classification, quick FAQ answers, confidence scoring, first-pass summarization.
+Privacy superpower: never touches the cloud, perfect for sensitive customer data.
+
+
+Smart Routing (the magic part):
+A tiny router node (can even be rule-based or a tiny SLM call) decides:
+→ Simple query? → SLM + RAG (super fast & private)
+→ Complex or low-confidence? → Hand over to LLM + full Agent
+Project Architecture (Visual Flow)
+textUser Message
+     ↓
+[Router Node] ── Simple? ──► SLM + RAG → Quick Answer
+              │
+              └─ Complex? ──► AI Agent (LangGraph)
+                                ├── Tool 1: Retrieve from RAG
+                                ├── Tool 2: Simulated Order DB lookup
+                                ├── Tool 3: Create Ticket (JSON log)
+                                └── Final Answer (LLM)
+What you will implement (step-by-step)
+Phase 1 – Setup (1–2 hours)
+
+Install Ollama + pull two models:Bashollama pull phi3:3.8b          # SLM (fast & private)
+ollama pull llama3.1:8b        # LLM
+Create a small knowledge base folder (knowledge_base/).
+
+Phase 2 – RAG (2–3 hours)
+
+Load documents → split → embed with nomic-embed-text → store in Chroma.
+
+Phase 3 – Tools & Agent (3–4 hours)
+
+Create 3–4 LangChain tools:
+retriever_tool (RAG)
+order_lookup_tool (fake database)
+create_ticket_tool (saves to JSON + logs)
+escalate_to_human_tool
+
+
+Phase 4 – Hybrid Router + LangGraph (3–4 hours)
+
+Build the full graph with conditional edges.
+Add memory (conversation history).
+
+Phase 5 – UI & Testing (2 hours)
+
+Start with CLI, then add Streamlit chat UI with two buttons:
+“Fast & Private Mode” (SLM only) vs “Full Intelligence Mode”.
+
+Total realistic time: 1 weekend if you follow a starter template.
+Why this project is perfect for learning
+
+You see the difference in speed and quality between SLM and LLM in real time.
+You practice production-grade patterns used by real companies.
+Privacy focus teaches you when to use local models (very hot topic in 2026).
+You end up with a portfolio-ready project you can show (“I built a privacy-first AI support agent”).
+
+Bonus extensions (once core is working)
+
+Add self-correction loop (“Is this answer grounded? If not, re-retrieve”).
+Add multi-agent: one SLM agent for triage, one LLM agent for deep support.
+Add evaluation: auto-score answers for accuracy + privacy compliance.
+Deploy SLM part on a Raspberry Pi to prove it works on low hardware.
+
+Why Phase 2 First?
+
+The RAG component grounds every answer in real data (FAQs, manuals, past tickets).
+Both SLM and LLM will later use this same retriever.
+You’ll see immediate value: even a simple RAG chain already gives much better answers than a plain LLM.
+
+What You’ll Create in Phase 2
+
+A folder with sample knowledge base.
+Code to load documents → split into chunks → embed them → store in Chroma vector database.
+A retriever that can fetch the most relevant chunks for any user query.
+Two separate RAG chains: one using SLM (fast & private) and one using LLM (higher quality).
+
+Step-by-Step Instructions for Phase 2
+1. Create the Knowledge Base Folder
+Create a project structure like this:
+textcustomer_support_simulator/
+├── knowledge_base/
+│   ├── faqs/
+│   │   ├── general_faq.json          # or .md files
+│   │   └── product_faq.md
+│   ├── manuals/
+│   │   ├── laptop_user_manual.pdf
+│   │   └── phone_warranty.pdf
+│   └── past_tickets/
+│       └── example_tickets.json      # 10–20 sample support tickets
+├── src/
+│   ├── rag.py                        # ← main file we'll build now
+│   ├── agent.py                      # for later phases
+│   └── utils.py
+├── requirements.txt
+└── main.py                           # CLI entry point later
+Sample content ideas (create these files yourself):
+
+general_faq.json example:
+
+JSON[
+  {"question": "What is the return policy?", "answer": "You can return any product within 30 days if unused and in original packaging. ..."},
+  {"question": "How do I reset my laptop password?", "answer": "Press F12 during boot and select recovery mode..."}
+]
+
+Add 5–10 realistic FAQs.
+For PDFs: download or create simple product manuals (or use text files for now).
+Past tickets: simple JSON array with {"ticket_id": "TKT-123", "issue": "...", "resolution": "..."}
+
+Tip: Start with only text/JSON files to avoid PDF parsing issues initially. Add PDFs later.
+2. Install Required Packages
+Update your requirements.txt and install:
+Bashpip install langchain langchain-community langchain-chroma langchain-ollama pypdf chromadb
+(If you want embeddings from Ollama too: ollama pull nomic-embed-text)
+3. Core RAG Code (src/rag.py)
+Here’s a clean starter you can copy and adapt:
+Pythonfrom langchain_community.document_loaders import JSONLoader, PyPDFLoader, DirectoryLoader
+from langchain_text_splitters import RecursiveCharacterTextSplitter
+from langchain_chroma import Chroma
+from langchain_ollama import OllamaEmbeddings, ChatOllama
+from langchain_core.prompts import ChatPromptTemplate
+from langchain_core.output_parsers import StrOutputParser
+from langchain_core.runnables import RunnablePassthrough
+import json
+import os
+
+# ------------------- Load Documents -------------------
+def load_knowledge_base(kb_path: str = "knowledge_base"):
+    documents = []
+    
+    # Load JSON FAQs and tickets
+    json_loader = DirectoryLoader(kb_path, glob="**/*.json", loader_cls=JSONLoader,
+                                  loader_kwargs={"jq_schema": ".[]", "text_content": False})
+    documents.extend(json_loader.load())
+    
+    # Load PDFs (manuals)
+    pdf_loader = DirectoryLoader(kb_path, glob="**/*.pdf", loader_cls=PyPDFLoader)
+    documents.extend(pdf_loader.load())
+    
+    return documents
+
+# ------------------- Build Vector Store -------------------
+def build_vector_store(docs, persist_directory="chroma_db"):
+    text_splitter = RecursiveCharacterTextSplitter(chunk_size=800, chunk_overlap=100)
+    splits = text_splitter.split_documents(docs)
+    
+    embeddings = OllamaEmbeddings(model="nomic-embed-text")  # or "mxbai-embed-large"
+    
+    vectorstore = Chroma.from_documents(
+        documents=splits,
+        embedding=embeddings,
+        persist_directory=persist_directory
+    )
+    return vectorstore
+
+# ------------------- Retriever -------------------
+def get_retriever(vectorstore, k=4):
+    return vectorstore.as_retriever(search_kwargs={"k": k})
+
+# ------------------- RAG Chains (SLM and LLM) -------------------
+def create_rag_chain(llm_model_name: str, retriever):
+    llm = ChatOllama(model=llm_model_name, temperature=0.3)
+    
+    prompt = ChatPromptTemplate.from_template(
+        """You are a helpful, polite customer support agent for TechGear Store.
+        Use ONLY the following context to answer the question.
+        If you don't know, say "I don't have enough information" and suggest escalating.
+        
+        Context: {context}
+        
+        Question: {question}
+        
+        Answer:"""
+    )
+    
+    def format_docs(docs):
+        return "\n\n".join(doc.page_content for doc in docs)
+    
+    chain = (
+        {"context": retriever | format_docs, "question": RunnablePassthrough()}
+        | prompt
+        | llm
+        | StrOutputParser()
+    )
+    return chain
+
+# ------------------- Usage Example -------------------
+if __name__ == "__main__":
+    if not os.path.exists("chroma_db") or len(os.listdir("chroma_db")) == 0:
+        docs = load_knowledge_base()
+        vectorstore = build_vector_store(docs)
+    else:
+        embeddings = OllamaEmbeddings(model="nomic-embed-text")
+        vectorstore = Chroma(persist_directory="chroma_db", embedding_function=embeddings)
+    
+    retriever = get_retriever(vectorstore)
+    
+    # Test both models
+    slm_chain = create_rag_chain("phi3:3.8b", retriever)      # or your SLM
+    llm_chain = create_rag_chain("llama3.1:8b", retriever)
+    
+    query = "What is the return policy for laptops?"
+    print("SLM Answer:", slm_chain.invoke(query))
+    print("\nLLM Answer:", llm_chain.invoke(query))
+4. Run and Test
+
+Run the script above.
+It will build the Chroma DB on first run (takes 30–90 seconds).
+Test a few queries and compare SLM speed vs LLM quality.
+
+Expected Outcome:
+
+You should get grounded answers that reference the knowledge base.
+SLM answers will be faster but sometimes shorter or less polished.
+LLM answers will be more detailed and natural.
+
+Common Issues & Fixes
+
+PDF loading fails: Use text/markdown files first.
+Embedding model not found: Run ollama pull nomic-embed-text
+Chroma persistence: Delete the chroma_db folder if you change documents.
+Memory usage: If your machine struggles, reduce chunk_size or use fewer documents initially.
+
+Once this phase works (you can query and get relevant answers from both models), reply with “Phase 2 done” or tell me any errors you hit.
+Then we’ll move to Phase 3: Creating Tools (retriever tool + order lookup + ticket creation) and building the AI Agent with LangGraph.
