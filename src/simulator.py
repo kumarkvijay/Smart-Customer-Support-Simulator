@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from dataclasses import dataclass
 from datetime import datetime, timezone
@@ -8,7 +8,13 @@ from typing import Any
 from .config import Settings, get_settings, normalize_mode
 from .knowledge_base import build_context, format_sources, load_knowledge_base, retrieve
 from .providers import chat_with_ollama
-from .router import RouteDecision, decide_route, detect_intent, extract_order_id
+from .router import (
+    RouteDecision,
+    decide_route,
+    detect_intent,
+    evaluate_simple_calculation,
+    extract_order_id,
+)
 from .tools import (
     build_ticket_summary,
     create_ticket,
@@ -20,13 +26,17 @@ from .tools import (
 
 try:
     from .agent import SupportLangChainAgent
-except Exception:
+    AGENT_IMPORT_ERROR = None
+except Exception as exc:
     SupportLangChainAgent = None
+    AGENT_IMPORT_ERROR = exc
 
 try:
     from .workflow import SupportConversationWorkflow
-except Exception:
+    WORKFLOW_IMPORT_ERROR = None
+except Exception as exc:
     SupportConversationWorkflow = None
+    WORKFLOW_IMPORT_ERROR = exc
 
 
 @dataclass(frozen=True)
@@ -48,14 +58,26 @@ class SupportSimulator:
         self.history: list[dict[str, str]] = []
         self.agent_runtime = None
         self.workflow = None
+        self.agent_runtime_error: str | None = (
+            f"{type(AGENT_IMPORT_ERROR).__name__}: {AGENT_IMPORT_ERROR}"
+            if AGENT_IMPORT_ERROR is not None
+            else None
+        )
+        self.workflow_error: str | None = (
+            f"{type(WORKFLOW_IMPORT_ERROR).__name__}: {WORKFLOW_IMPORT_ERROR}"
+            if WORKFLOW_IMPORT_ERROR is not None
+            else None
+        )
 
         if SupportLangChainAgent and self.settings.enable_langchain_agent:
             try:
                 self.agent_runtime = SupportLangChainAgent(
                     self.settings, self.knowledge_chunks
                 )
-            except Exception:
+                self.agent_runtime_error = None
+            except Exception as exc:
                 self.agent_runtime = None
+                self.agent_runtime_error = f"{type(exc).__name__}: {exc}"
 
         if SupportConversationWorkflow:
             try:
@@ -64,14 +86,22 @@ class SupportSimulator:
                     self.knowledge_chunks,
                     self.agent_runtime,
                 )
-            except Exception:
+                self.workflow_error = None
+            except Exception as exc:
                 self.workflow = None
+                self.workflow_error = f"{type(exc).__name__}: {exc}"
 
     def handle_message(self, message: str, mode: str | None = None) -> SupportResponse:
         selected_mode = normalize_mode(mode, self.settings.default_mode)
 
         if selected_mode in {"raw_llm", "raw_slm"}:
             response = self._handle_raw_model_mode(message, selected_mode)
+            self._remember(message, response.answer)
+            self._log_interaction(message, response, selected_mode)
+            return response
+
+        response = self._handle_direct_calculation(message, selected_mode)
+        if response is not None:
             self._remember(message, response.answer)
             self._log_interaction(message, response, selected_mode)
             return response
@@ -194,16 +224,22 @@ class SupportSimulator:
         if response is not None:
             return response
 
+        fallback_response = self._handle_with_fallback(message, decision, results)
+        diagnostic = "LangChain agent unavailable; used grounded fallback pipeline."
+        if self.agent_runtime_error:
+            diagnostic = (
+                f"LangChain agent unavailable ({self.agent_runtime_error}); "
+                "used grounded fallback pipeline."
+            )
+
         return SupportResponse(
-            answer=(
-                "Agent mode is unavailable right now. The LangChain agent could not be "
-                "started or did not complete successfully."
-            ),
-            route="agent",
-            intent=decision.intent,
-            confidence=0.0,
-            sources=[],
-            actions=["Agent mode failed to execute."],
+            answer=fallback_response.answer,
+            route=fallback_response.route,
+            intent=fallback_response.intent,
+            confidence=fallback_response.confidence,
+            sources=fallback_response.sources,
+            actions=self._dedupe_list([diagnostic, *fallback_response.actions]),
+            ticket_id=fallback_response.ticket_id,
         )
 
     def _build_agent_mode_decision(self, message: str, results) -> RouteDecision:
@@ -226,7 +262,9 @@ class SupportSimulator:
 
         try:
             agent_result = self.agent_runtime.invoke(message, self.history, decision)
-        except Exception:
+            self.agent_runtime_error = None
+        except Exception as exc:
+            self.agent_runtime_error = f"{type(exc).__name__}: {exc}"
             return None
 
         answer = agent_result.answer
@@ -311,6 +349,35 @@ class SupportSimulator:
             sources=format_sources(results),
             actions=self._dedupe_list(actions),
             ticket_id=ticket_id,
+        )
+
+    def _handle_direct_calculation(
+        self, message: str, selected_mode: str
+    ) -> SupportResponse | None:
+        if selected_mode not in {"agent", "auto", "fast", "full"}:
+            return None
+
+        if detect_intent(message) != "calculation":
+            return None
+
+        result = evaluate_simple_calculation(message)
+        if result is None:
+            return None
+
+        if selected_mode == "agent":
+            route = "agent"
+        elif selected_mode == "fast":
+            route = "fast_private"
+        else:
+            route = "full_power"
+
+        return SupportResponse(
+            answer=result,
+            route=route,
+            intent="calculation",
+            confidence=1.0,
+            sources=[],
+            actions=[],
         )
 
     def _maybe_lookup_order(
@@ -549,4 +616,5 @@ class SupportSimulator:
                 seen.add(item)
                 unique_items.append(item)
         return unique_items
+
 

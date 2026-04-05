@@ -1,4 +1,4 @@
-﻿from __future__ import annotations
+from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
@@ -16,7 +16,23 @@ MODE_ALIASES = {
     "raw_slm": "raw_slm",
     "agent": "agent",
     "rag": "rag",
+    "fast_private": "raw_slm",
+    "fast_and_private": "raw_slm",
+    "fast_private_mode": "raw_slm",
+    "fast_and_private_mode": "raw_slm",
+    "slm_only": "raw_slm",
+    "full_intelligence": "agent",
+    "full_intelligence_mode": "agent",
 }
+
+
+def normalize_mode_token(mode: str | None) -> str:
+    candidate = (mode or "").strip().lower()
+    for source, target in (("&", " and "), ("-", "_"), (" ", "_"), ("/", "_")):
+        candidate = candidate.replace(source, target)
+    while "__" in candidate:
+        candidate = candidate.replace("__", "_")
+    return candidate.strip("_")
 
 
 @dataclass(frozen=True)
@@ -36,14 +52,14 @@ class Settings:
 
 
 def is_supported_mode(mode: str | None) -> bool:
-    if mode is None:
+    candidate = normalize_mode_token(mode)
+    if not candidate:
         return False
-    candidate = mode.strip().lower()
     return candidate in SUPPORTED_MODES or candidate in MODE_ALIASES
 
 
 def normalize_mode(mode: str | None, default: str = "agent") -> str:
-    candidate = (mode or default).strip().lower()
+    candidate = normalize_mode_token(mode or default)
     candidate = MODE_ALIASES.get(candidate, candidate)
     if candidate not in SUPPORTED_MODES:
         return default if default in SUPPORTED_MODES else "agent"

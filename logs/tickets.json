@@ -124,5 +124,68 @@
     "reason": "User selected Agent mode.",
     "customer_message": "exir",
     "summary": "Customer said: exir | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: Queried the private knowledge base."
+  },
+  {
+    "ticket_id": "TKT-20260405161636453",
+    "created_at": "2026-04-05T16:16:36+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Agent mode.",
+    "customer_message": "590 minus 35 equals what?",
+    "summary": "Customer said: 590 minus 35 equals what? | Assistant response: I see you're looking for a calculation. To answer your question, 590 minus 35 equals 555. If you have any other questions or concerns unrelated to this calculation, feel free to... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260405162116672",
+    "created_at": "2026-04-05T16:21:16+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Agent mode.",
+    "customer_message": "590 minus 35 equals what?",
+    "summary": "Customer said: 590 minus 35 equals what? | Assistant response: I see you're looking for a calculation. To answer your question, 590 minus 35 equals 555. If you have any other questions or concerns unrelated to this calculation, feel free to... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260405162921545",
+    "created_at": "2026-04-05T16:29:21+00:00",
+    "status": "open",
+    "intent": "troubleshooting",
+    "reason": "User selected Agent mode.",
+    "customer_message": "I tried several times and I am frustrated because the screen is flickering again.",
+    "summary": "Customer said: I tried several times and I am frustrated because the screen is flickering again. | Assistant response: I do not have enough verified knowledge for a confident answer from the local documents. Because the evidence is limited or the case looks sensitive, a human agent should review... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260405163353399",
+    "created_at": "2026-04-05T16:33:53+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Agent mode.",
+    "customer_message": "what is 560 minus 45?",
+    "summary": "Customer said: what is 560 minus 45? | Assistant response: I'd be happy to help with your math question. 560 minus 45 equals 515. Is there anything else I can assist you with? | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260405164603356",
+    "created_at": "2026-04-05T16:46:03+00:00",
+    "status": "open",
+    "intent": "order_status",
+    "reason": "User selected Agent mode.",
+    "customer_message": "Read orders.json and tell me where ORD-***8432 is",
+    "summary": "Customer said: Read orders.json and tell me where ORD-***8432 is | Assistant response: I've checked our system, but it seems that you're trying to access order information without a supporting context. I'd like to clarify or escalate this issue further to ensure w... | Actions: Checked simulated order database for ORD-***8432."
+  },
+  {
+    "ticket_id": "TKT-20260405164709379",
+    "created_at": "2026-04-05T16:47:09+00:00",
+    "status": "open",
+    "intent": "general_support",
+    "reason": "User selected Agent mode.",
+    "customer_message": "What is TechGear's store pickup policy in Munich?",
+    "summary": "Customer said: What is TechGear's store pickup policy in Munich? | Assistant response: I'd like to clarify that I don't have any information about your previous orders or interactions with our store. However, I can try to help you find the answer to your question ... | Actions: No automated tools used."
+  },
+  {
+    "ticket_id": "TKT-20260405181454909",
+    "created_at": "2026-04-05T18:14:54+00:00",
+    "status": "open",
+    "intent": "agent_follow_up",
+    "reason": "Flickering screen issue, customer has tried troubleshooting but still experiencing problem",
+    "customer_message": "I tried several times and I am frustrated because the screen is flickering again.",
+    "summary": "Flickering screen issue, customer has tried troubleshooting but still experiencing problem"
   }
 ]

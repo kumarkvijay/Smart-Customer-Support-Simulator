@@ -1,6 +1,8 @@
-﻿param(
-    [ValidateSet("raw_llm", "raw_slm", "agent", "rag", "auto", "fast", "full")]
+param(
+    [ValidateSet("raw_llm", "raw_slm", "agent", "rag", "auto", "fast", "full", "Fast & Private Mode", "Full Intelligence Mode")]
     [string]$Mode = "agent",
+    [ValidateSet("cli", "streamlit")]
+    [string]$Interface = "cli",
     [string]$Message,
     [string]$OllamaUrl = "http://localhost:11434",
     [switch]$SkipOllama,
@@ -49,7 +51,7 @@ function Test-OllamaReady {
     param([string]$BaseUrl)
 
     try {
-        Invoke-RestMethod -Uri "$($BaseUrl.TrimEnd('/') )/api/tags" -Method Get -TimeoutSec 5 | Out-Null
+        Invoke-RestMethod -Uri "$($BaseUrl.TrimEnd('/'))/api/tags" -Method Get -TimeoutSec 5 | Out-Null
         return $true
     } catch {
         return $false
@@ -70,10 +72,12 @@ function Get-InstalledOllamaModels {
 $projectRoot = Split-Path -Parent $MyInvocation.MyCommand.Path
 $pythonExe = Resolve-PythonExe -ProjectRoot $projectRoot
 $mainScript = Join-Path $projectRoot "main.py"
+$streamlitScript = Join-Path $projectRoot "streamlit_app.py"
 
 Write-Host "Launching Smart Customer Support Simulator"
 Write-Host "Project root: $projectRoot"
 Write-Host "Using Python: $pythonExe"
+Write-Host "Interface: $Interface"
 Write-Host "Mode: $Mode"
 
 if (-not $SkipOllama) {
@@ -112,13 +116,19 @@ $env:OLLAMA_URL = $OllamaUrl
 
 Push-Location $projectRoot
 try {
-    if ($PSBoundParameters.ContainsKey("Message") -and -not [string]::IsNullOrWhiteSpace($Message)) {
-        & $pythonExe $mainScript --mode $Mode --message $Message
+    if ($Interface -eq "streamlit") {
+        if ($PSBoundParameters.ContainsKey("Message") -and -not [string]::IsNullOrWhiteSpace($Message)) {
+            Write-Warning "-Message is ignored when -Interface streamlit is used. Use the chat box in the browser instead."
+        }
+        Write-Host "Launching Streamlit chat UI..."
+        & $pythonExe -m streamlit run $streamlitScript
     } else {
-        & $pythonExe $mainScript --mode $Mode
+        if ($PSBoundParameters.ContainsKey("Message") -and -not [string]::IsNullOrWhiteSpace($Message)) {
+            & $pythonExe $mainScript --mode $Mode --message $Message
+        } else {
+            & $pythonExe $mainScript --mode $Mode
+        }
     }
 } finally {
     Pop-Location
 }
-
-

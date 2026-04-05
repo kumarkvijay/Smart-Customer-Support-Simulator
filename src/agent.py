@@ -1,8 +1,25 @@
 from __future__ import annotations
 
 from dataclasses import dataclass
+import importlib
 import json
 from typing import Annotated
+
+
+def _ensure_langgraph_agent_compatibility() -> None:
+    runtime = importlib.import_module("langgraph.runtime")
+
+    if not hasattr(runtime, "ServerInfo"):
+        class ServerInfo:
+            pass
+
+        runtime.ServerInfo = ServerInfo
+
+    if not hasattr(runtime.Runtime, "server_info"):
+        runtime.Runtime.server_info = None
+
+
+_ensure_langgraph_agent_compatibility()
 
 from langchain.agents import create_agent
 from langchain.tools import tool

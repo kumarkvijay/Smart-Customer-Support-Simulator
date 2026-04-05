@@ -194,11 +194,17 @@ def retrieve(query: str, chunks: Iterable[KnowledgeChunk], k: int = 3) -> list[S
 
     query_counts = Counter(query_tokens)
     query_text = query.lower()
+    alphabetic_query_tokens = [
+        token for token in query_tokens if any(char.isalpha() for char in token)
+    ]
     results: list[SearchResult] = []
 
     for chunk in chunks:
         chunk_counts = Counter(chunk.tokens)
         matched_terms = [token for token in query_counts if token in chunk_counts]
+        matched_alphabetic_terms = [
+            token for token in matched_terms if any(char.isalpha() for char in token)
+        ]
         overlap = sum(
             min(chunk_counts[token], count) for token, count in query_counts.items()
         )
@@ -213,6 +219,8 @@ def retrieve(query: str, chunks: Iterable[KnowledgeChunk], k: int = 3) -> list[S
             or query_coverage >= 0.5
             or (len(query_counts) == 1 and overlap > 0)
         )
+        if alphabetic_query_tokens and not matched_alphabetic_terms and phrase_bonus == 0:
+            strong_match = False
 
         if score > 0 and strong_match:
             results.append(SearchResult(chunk=chunk, score=round(score, 3)))
@@ -221,21 +229,21 @@ def retrieve(query: str, chunks: Iterable[KnowledgeChunk], k: int = 3) -> list[S
     return results[:k]
 
 
+def build_context(results: Iterable[SearchResult]) -> str:
+    sections = []
+    for result in results:
+        sections.append(
+            f"Source: {result.chunk.source}\nTitle: {result.chunk.title}\nContent: {result.chunk.text}"
+        )
+    return "\n\n".join(sections)
+
+
 def format_sources(results: Iterable[SearchResult]) -> list[str]:
     seen: set[str] = set()
     formatted: list[str] = []
     for result in results:
-        label = f"{result.chunk.source} ({result.chunk.title})"
-        if label not in seen:
-            seen.add(label)
-            formatted.append(label)
+        source = f"{result.chunk.source} ({result.chunk.title})"
+        if source not in seen:
+            seen.add(source)
+            formatted.append(source)
     return formatted
-
-
-def build_context(results: Iterable[SearchResult]) -> str:
-    blocks: list[str] = []
-    for index, result in enumerate(results, start=1):
-        blocks.append(f"[Source {index}] {result.chunk.title}\n{result.chunk.text}")
-    return "\n\n".join(blocks)
-
-
