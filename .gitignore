@@ -4,3 +4,4 @@
 .venv312/
 .env
 logs/interactions.jsonl
+*.json
